@@ -92,13 +92,6 @@ function AppHeader() {
                           <MyAccountIcon className="h-5 w-5 text-primary" />
                         ),
                       },
-                      {
-                        to: "/doc-list",
-                        label: "Doc Manager",
-                        icon: (
-                          <DashboardIcon className="h-5 w-5 text-primary" />
-                        ),
-                      },
                     ].map((linkObj) => (
                       <li key={linkObj.to} className="pr-6">
                         <Link
