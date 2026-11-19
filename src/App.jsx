@@ -3,17 +3,18 @@ import { useSelector } from "react-redux";
 import { ReactComponent as Rotate } from "./assets/icons/Rotate.svg";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Login from "./screens/Login";
+import Login from "./screens/auth/Login";
 import DrawerLayout from "./components/DrawerLayout";
 import AuthRoute from "./routes/AuthRoute";
 import UnAuthRoute from "./routes/UnAuthRoute";
-import Register from "./screens/Register";
-import SignIn from "./screens/SignIn";
-import Forgot from "./screens/Forgot";
+import Register from "./screens/auth/Register";
+import SignIn from "./screens/auth/SignIn";
+import Forgot from "./screens/auth/Forgot";
 import LoadingScreen from "./components/LoadingScreen";
-import Invoice from "./screens/Invoice";
-import ViewInvoice from "./screens/ViewInvoice";
-import InvoiceList from "./screens/InvoiceList";
+import Invoice from "./screens/invoice/Invoice";
+import ViewInvoice from "./screens/invoice/ViewInvoice";
+import InvoiceList from "./screens/invoice/InvoiceList";
+import DocList from "./screens/doc/DocList";
 
 const App = () => {
   const { loading } = useSelector((state) => state.common);
@@ -68,6 +69,14 @@ const App = () => {
                 element={
                   <AuthRoute>
                     <Invoice />
+                  </AuthRoute>
+                }
+              />
+              <Route
+                path="/doc-list"
+                element={
+                  <AuthRoute>
+                    <DocList />
                   </AuthRoute>
                 }
               />

@@ -1,20 +1,19 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
-import AuthBackground from "../assets/images/Banner.png";
-import AppContent from "../assets/images/App-content.png";
-import { ReactComponent as Loader } from "../assets/icons/Loader.svg";
-import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../utils/firebase";
 
-const SignIn = () => {
+import AuthBackground from "../../assets/images/Banner.png";
+import AppContent from "../../assets/images/App-content.png";
+import { ReactComponent as Loader } from "../../assets/icons/Loader.svg";
+import { Link } from "react-router-dom";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../../utils/firebase";
+import { toast } from "react-toastify";
+
+const Forgot = () => {
   const GoogleSignInModal = ({ isOpen, onClose }) => {
-    const navigate = useNavigate();
     const modalStyle = isOpen ? "block" : "hidden";
     const [isLoading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
       email: "",
-      password: "",
     });
     const [errors, setErrors] = useState({});
 
@@ -25,34 +24,45 @@ const SignIn = () => {
       } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
         newErrors.email = "Email format is invalid";
       }
-      if (!formData.password) {
-        newErrors.password = "Password is required";
-      } else if (formData.password.length < 6) {
-        newErrors.password = "Password must be at least 6 characters";
-      }
       setErrors(newErrors);
       return Object.keys(newErrors).length === 0;
     };
-
-    const handleLogin = async (e) => {
+    const handleReset = async (e) => {
       e.preventDefault();
-      try {
-        setLoading(true);
-        if (validate()) {
-          await signInWithEmailAndPassword(
-            auth,
-            formData?.email,
-            formData?.password
-          );
-          navigate("/dashboard");
-        } else {
+      if (validate()) {
+        try {
+          setLoading(true);
+          await sendPasswordResetEmail(auth, formData.email);
+          toast.success("Password reset email sent! Check your inbox.");
+        } catch (err) {
+          alert(err.message);
+          if (err.code === "auth/user-not-found") {
+            toast.error("No user found with this email.");
+          } else if (err.code === "auth/invalid-email") {
+            toast.error("Please enter a valid email address.");
+          } else {
+            toast.error("Something went wrong. Please try again.");
+          }
           setLoading(false);
         }
-      } catch (err) {
+      } else {
         setLoading(false);
-        console.log(err);
-        toast.error("Invalid credentials");
       }
+      // try {
+      //   setLoading(true);
+      //   await sendPasswordResetEmail(auth, formData.email);
+      //   toast.success("Password reset email sent! Check your inbox.");
+      // } catch (err) {
+      //   alert(err.message);
+      //   if (err.code === "auth/user-not-found") {
+      //     toast.error("No user found with this email.");
+      //   } else if (err.code === "auth/invalid-email") {
+      //     toast.error("Please enter a valid email address.");
+      //   } else {
+      //     toast.error("Something went wrong. Please try again.");
+      //   }
+      //   setLoading(false);
+      // }
     };
 
     return (
@@ -75,7 +85,7 @@ const SignIn = () => {
               class="w-10/12 m-auto justify-center"
             />
             <div
-              className="mt-2"
+              className="mt-6"
               //  onSubmit={onSumbit}
             >
               <div className="mb-4">
@@ -99,32 +109,6 @@ const SignIn = () => {
                 />
                 {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
               </div>
-              <div className="mb-6">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      password: e.target.value,
-                    }))
-                  }
-                  required
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-700 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="Enter your password"
-                />
-                {errors.password && (
-                  <p style={{ color: "red" }}>{errors.password}</p>
-                )}
-              </div>
               {isLoading ? (
                 <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded">
                   <Loader className="w-full h-6" />
@@ -133,24 +117,21 @@ const SignIn = () => {
                 <button
                   type="submit"
                   className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded"
-                  onClick={handleLogin}
+                  onClick={handleReset}
                 >
-                  Login
+                  Send Email
                 </button>
               )}
               {/* <button
-                type="submit"
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded"
-                onClick={handleLogin}
-              >
-                Login
-              </button> */}
-              <div className="flex justify-between mt-2">
-                <Link className="text-blue-500" to="/">
-                  Go Back
-                </Link>
-                <Link className="text-blue-500" to="/forgot">
-                  Forgot Password
+                                type="submit"
+                                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded"
+                                onClick={handleReset}
+                            >
+                                Send Email
+                            </button> */}
+              <div className="flex justify-center mt-2">
+                <Link className="text-blue-500" to="/login">
+                  Go to Login
                 </Link>
               </div>
             </div>
@@ -173,4 +154,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Forgot;

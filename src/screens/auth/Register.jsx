@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import AuthBackground from "../assets/images/Banner.png";
-import AppContent from "../assets/images/App-content.png";
-import { ReactComponent as Loader } from "../assets/icons/Loader.svg";
+import AuthBackground from "../../assets/images/Banner.png";
+import AppContent from "../../assets/images/App-content.png";
+import { ReactComponent as Loader } from "../../assets/icons/Loader.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { CreateAccountService } from "../services/userService";
+import { CreateAccountService } from "../../services/userService";
 
 const Register = () => {
   const GoogleSignInModal = ({ isOpen, onClose }) => {
@@ -71,7 +71,7 @@ const Register = () => {
               borderTopLeftRadius: "65px",
               borderTopRightRadius: "65px",
               bottom: 0,
-              top: "35%",
+              top: "55%",
             }}
           >
             <img
