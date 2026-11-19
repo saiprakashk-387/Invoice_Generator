@@ -14,7 +14,6 @@ import LoadingScreen from "./components/LoadingScreen";
 import Invoice from "./screens/invoice/Invoice";
 import ViewInvoice from "./screens/invoice/ViewInvoice";
 import InvoiceList from "./screens/invoice/InvoiceList";
-import DocList from "./screens/doc/DocList";
 
 const App = () => {
   const { loading } = useSelector((state) => state.common);
