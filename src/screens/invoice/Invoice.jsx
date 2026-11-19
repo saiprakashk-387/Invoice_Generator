@@ -2,10 +2,10 @@ import React, { useRef, useState } from "react";
 import {
   CreateInvoiceService,
   GetInvoiceService,
-} from "../services/postService";
+} from "../../services/postService";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import InvoiceCard from "../components/InvoiceCard";
+import InvoiceCard from "../../components/InvoiceCard";
 
 const Invoice = () => {
   const dispatch = useDispatch();
@@ -95,7 +95,7 @@ const Invoice = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col border-2">
-      <div className="p-4 max-w-md mx-auto border-sky-100">
+      <div className="p-4  mx-auto border-sky-100">
         <h1 className="text-2xl font-bold mb-4">🧾 Price List Calculator</h1>
         <div className="mb-4 space-y-2">
           <input

@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import { ReactComponent as Arrow } from "../assets/icons/BlackBackArrow.svg";
+import { ReactComponent as Arrow } from "../../assets/icons/BlackBackArrow.svg";
 
 const ViewInvoice = () => {
   const contentRef = useRef();

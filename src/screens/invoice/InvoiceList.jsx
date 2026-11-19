@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetInvoiceService } from "../services/postService";
+import { GetInvoiceService } from "../../services/postService";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as Arrow } from "../assets/icons/BlackBackArrow.svg";
-import InvoiceCard from "../components/InvoiceCard";
+import { ReactComponent as Arrow } from "../../assets/icons/BlackBackArrow.svg";
+import InvoiceCard from "../../components/InvoiceCard";
 
 const InvoiceList = () => {
   const dispatch = useDispatch();

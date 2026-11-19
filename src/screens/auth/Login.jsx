@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-import AuthBackground from "../assets/images/Banner.png";
-import AppContent from "../assets/images/App-content.png";
+import AuthBackground from "../../assets/images/Banner.png";
+import AppContent from "../../assets/images/App-content.png";
 // import AppBanner from "../assets/images/Banner.png";
-import GoogleButton from "../assets/images/Googlesignin.png";
-import { ReactComponent as Loader } from "../assets/icons/Loader.svg";
+import GoogleButton from "../../assets/images/Googlesignin.png";
+import { ReactComponent as Loader } from "../../assets/icons/Loader.svg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { SigninWithGoogle } from "../services/userService";
+import { SigninWithGoogle } from "../../services/userService";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const Login = () => {
               borderTopLeftRadius: "65px",
               borderTopRightRadius: "65px",
               bottom: 0,
-              top: "55%",
+              top: "60%",
             }}
           >
             <img
@@ -50,7 +50,7 @@ const Login = () => {
               <button
                 type="button"
                 onClick={() => navigate("/register")}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 mt-4 rounded-[35px] text-white py-4 px-4 "
+                className="w-full bg-indigo-600 text-lg hover:bg-indigo-700 mt-4 rounded-[35px] text-white py-5 px-4 "
               >
                 Login With Email
               </button>
@@ -61,7 +61,7 @@ const Login = () => {
                 </button>
               ) : (
                 <button
-                  className="w-full relative  right-0 text-white  bg-[#264488] border rounded-[35px]"
+                  className="w-full relative  right-0 text-white  border"
                   onClick={() => handleGoogleSignIn()}
                 >
                   <img

@@ -30,7 +30,7 @@ function AppHeader() {
     dispatch(GetUserService());
   }, [dispatch]);
   return (
-    <main className=" max-w-lg mx-auto relative bg-white">
+    <main className=" mx-auto relative bg-blue-400">
       <Transition show={isOpen} as={Fragment}>
         <Dialog as={Fragment} onClose={() => setIsOpen(false)}>
           <Transition.Child
@@ -92,6 +92,13 @@ function AppHeader() {
                           <MyAccountIcon className="h-5 w-5 text-primary" />
                         ),
                       },
+                      {
+                        to: "/doc-list",
+                        label: "Doc Manager",
+                        icon: (
+                          <DashboardIcon className="h-5 w-5 text-primary" />
+                        ),
+                      },
                     ].map((linkObj) => (
                       <li key={linkObj.to} className="pr-6">
                         <Link
@@ -143,9 +150,9 @@ function AppHeader() {
               className="rounded-3xl"
             />
           </div>
-          <div>
-            <h3 className="text-sm text-[#00000054]">{greetingsText}</h3>
-            <h2 className="text-lg text-[#000000] font-medium truncate">
+          <div className="text-center px-3">
+            <h3 className="text-sm text-white">{greetingsText}</h3>
+            <h2 className="text-lg text-white font-medium truncate">
               {user?.displayName ? user?.displayName : userData?.name}
             </h2>
           </div>

@@ -1,19 +1,20 @@
 import { useState } from "react";
-
-import AuthBackground from "../assets/images/Banner.png";
-import AppContent from "../assets/images/App-content.png";
-import { ReactComponent as Loader } from "../assets/icons/Loader.svg";
-import { Link } from "react-router-dom";
-import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "../utils/firebase";
 import { toast } from "react-toastify";
+import AuthBackground from "../../assets/images/Banner.png";
+import AppContent from "../../assets/images/App-content.png";
+import { ReactComponent as Loader } from "../../assets/icons/Loader.svg";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../utils/firebase";
 
-const Forgot = () => {
+const SignIn = () => {
   const GoogleSignInModal = ({ isOpen, onClose }) => {
+    const navigate = useNavigate();
     const modalStyle = isOpen ? "block" : "hidden";
     const [isLoading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
       email: "",
+      password: "",
     });
     const [errors, setErrors] = useState({});
 
@@ -24,45 +25,34 @@ const Forgot = () => {
       } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
         newErrors.email = "Email format is invalid";
       }
+      if (!formData.password) {
+        newErrors.password = "Password is required";
+      } else if (formData.password.length < 6) {
+        newErrors.password = "Password must be at least 6 characters";
+      }
       setErrors(newErrors);
       return Object.keys(newErrors).length === 0;
     };
-    const handleReset = async (e) => {
+
+    const handleLogin = async (e) => {
       e.preventDefault();
-      if (validate()) {
-        try {
-          setLoading(true);
-          await sendPasswordResetEmail(auth, formData.email);
-          toast.success("Password reset email sent! Check your inbox.");
-        } catch (err) {
-          alert(err.message);
-          if (err.code === "auth/user-not-found") {
-            toast.error("No user found with this email.");
-          } else if (err.code === "auth/invalid-email") {
-            toast.error("Please enter a valid email address.");
-          } else {
-            toast.error("Something went wrong. Please try again.");
-          }
+      try {
+        setLoading(true);
+        if (validate()) {
+          await signInWithEmailAndPassword(
+            auth,
+            formData?.email,
+            formData?.password
+          );
+          navigate("/dashboard");
+        } else {
           setLoading(false);
         }
-      } else {
+      } catch (err) {
         setLoading(false);
+        console.log(err);
+        toast.error("Invalid credentials");
       }
-      // try {
-      //   setLoading(true);
-      //   await sendPasswordResetEmail(auth, formData.email);
-      //   toast.success("Password reset email sent! Check your inbox.");
-      // } catch (err) {
-      //   alert(err.message);
-      //   if (err.code === "auth/user-not-found") {
-      //     toast.error("No user found with this email.");
-      //   } else if (err.code === "auth/invalid-email") {
-      //     toast.error("Please enter a valid email address.");
-      //   } else {
-      //     toast.error("Something went wrong. Please try again.");
-      //   }
-      //   setLoading(false);
-      // }
     };
 
     return (
@@ -76,7 +66,7 @@ const Forgot = () => {
               borderTopLeftRadius: "65px",
               borderTopRightRadius: "65px",
               bottom: 0,
-              top: "50%",
+              top: "65%",
             }}
           >
             <img
@@ -85,7 +75,7 @@ const Forgot = () => {
               class="w-10/12 m-auto justify-center"
             />
             <div
-              className="mt-6"
+              className="mt-2"
               //  onSubmit={onSumbit}
             >
               <div className="mb-4">
@@ -109,6 +99,32 @@ const Forgot = () => {
                 />
                 {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
               </div>
+              <div className="mb-6">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }))
+                  }
+                  required
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-700 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  placeholder="Enter your password"
+                />
+                {errors.password && (
+                  <p style={{ color: "red" }}>{errors.password}</p>
+                )}
+              </div>
               {isLoading ? (
                 <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded">
                   <Loader className="w-full h-6" />
@@ -117,21 +133,24 @@ const Forgot = () => {
                 <button
                   type="submit"
                   className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded"
-                  onClick={handleReset}
+                  onClick={handleLogin}
                 >
-                  Send Email
+                  Login
                 </button>
               )}
               {/* <button
-                                type="submit"
-                                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded"
-                                onClick={handleReset}
-                            >
-                                Send Email
-                            </button> */}
-              <div className="flex justify-center mt-2">
-                <Link className="text-blue-500" to="/login">
-                  Go to Login
+                type="submit"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded"
+                onClick={handleLogin}
+              >
+                Login
+              </button> */}
+              <div className="flex justify-between mt-2">
+                <Link className="text-blue-500" to="/">
+                  Go Back
+                </Link>
+                <Link className="text-blue-500" to="/forgot">
+                  Forgot Password
                 </Link>
               </div>
             </div>
@@ -154,4 +173,4 @@ const Forgot = () => {
   );
 };
 
-export default Forgot;
+export default SignIn;
