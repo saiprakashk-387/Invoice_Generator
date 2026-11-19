@@ -72,14 +72,14 @@ const App = () => {
                   </AuthRoute>
                 }
               />
-              <Route
+              {/* <Route
                 path="/doc-list"
                 element={
                   <AuthRoute>
                     <DocList />
                   </AuthRoute>
                 }
-              />
+              /> */}
             </Route>
 
             <Route
